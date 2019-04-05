@@ -3,14 +3,16 @@ import React, {
 } from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import Header from './HeaderComponent';
-import Footer from './FooterComponent';
+import Header from './components/HeaderComponent';
+import Footer from './components/FooterComponent';
+import Menu from './components/MenuComponent';
 
 class App extends Component {
   render() {
     return ( 
     <div className = "App" >
       <Header />
+      <Menu />
       <Footer />
     </div>
     );
