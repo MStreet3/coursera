@@ -6,17 +6,30 @@
     "bootstrap": "^4.0.0",
     "bootstrap-social": "^5.1.1",
     "font-awesome": "^4.7.0",
+    "moment": "^2.24.0",
+    "prettier": "^1.17.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-popper": "^0.9.2",
-    "react-scripts": "2.0.5",
+    "react-scripts": "^2.1.8",
     "reactstrap": "^5.0.0"
+  },
+  "lint-staged": {
+    "{src,__mocks__,tests}/**/*.{js,json}": [
+      "prettier --single-quote --arrow-parens=always --write",
+      "./node_modules/.bin/eslint",
+      "git add"
+    ]
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "npm run check-types && jest",
+    "eject": "react-scripts eject",
+    "lint": "./node_modules/.bin/eslint '{src,__mocks__,tests, dist}/**/*.{js,json}'",
+    "precommit": "lint-staged",
+    "format": "prettier --single-quote --arrow-parens=always --write '{src,__mocks__,tests, dist}/**/*.{js,json,ts,tsx}'",
+    "eslint-check": "eslint --print-config . | eslint-config-prettier-check"
   },
   "eslintConfig": {
     "extends": "react-app"
