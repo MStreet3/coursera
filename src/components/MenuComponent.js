@@ -5,26 +5,6 @@ import { Dishdetail } from './DishdetailComponent';
 class Menu extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedDish: null
-    };
-
-    this.onDishSelect = this.onDishSelect.bind(this);
-    this.renderDish = this.renderDish.bind(this);
-  }
-
-  onDishSelect(dish) {
-    this.setState({
-      selectedDish: dish
-    });
-  }
-
-  renderDish(dish) {
-    if (dish != null) {
-      return <Dishdetail dish={dish} />;
-    } else {
-      return <div />;
-    }
   }
 
   render() {
@@ -32,7 +12,7 @@ class Menu extends Component {
       // put each dish into a standard display div
       return (
         <div className="col-12 col-md-5 m-1">
-          <Card key={dish.id} onClick={() => this.onDishSelect(dish)}>
+          <Card key={dish.id} onClick={() => this.props.onClick(dish.id)}>
             <CardImg width="100%" src={dish.image} alt={dish.name} />
             <CardImgOverlay>
               <CardTitle>{dish.name}</CardTitle>
@@ -44,10 +24,7 @@ class Menu extends Component {
 
     return (
       <div className="container">
-        {/* top row is the menu */}
         <div className="row">{menu}</div>
-        {/* second row is the selected dish */}
-        {this.renderDish(this.state.selectedDish)}
       </div>
     );
   }
