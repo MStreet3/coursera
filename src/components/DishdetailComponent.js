@@ -28,10 +28,13 @@ function renderComments(dish) {
             {dish.comments.map((obj) => {
               return (
                 <div>
-                  <p>{obj.comment}</p>
-                  <p>
-                    ---{obj.author}, {moment(obj.date).format('MMM. DD, YYYY')}
-                  </p>
+                  <ul className="list-unstyled">
+                    <li>{obj.comment}</li>
+                    <li>
+                      ---{obj.author},{' '}
+                      {moment(obj.date).format('MMM. DD, YYYY')}
+                    </li>
+                  </ul>
                 </div>
               );
             })}
