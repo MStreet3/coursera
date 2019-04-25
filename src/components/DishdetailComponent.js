@@ -1,8 +1,17 @@
 import React from 'react';
-import { Card, CardImg, CardBody, CardTitle, CardText } from 'reactstrap';
+import {
+  Card,
+  CardImg,
+  CardBody,
+  CardTitle,
+  CardText,
+  Breadcrumb,
+  BreadcrumbItem
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-function renderDish(dish) {
+function RenderDish({ dish }) {
   if (dish != null) {
     return (
       <Card key={`selected-${dish.id}`}>
@@ -18,14 +27,14 @@ function renderDish(dish) {
   }
 }
 
-function renderComments(dish) {
-  if (dish != null) {
+function RenderComments({ comments }) {
+  if (comments != null) {
     return (
-      <Card key={`comments-selected-${dish.id}`}>
+      <Card key={`comments-selected-${comments.dishId}`}>
         <CardBody className="text-left">
           <CardTitle>Comments</CardTitle>
           <CardText>
-            {dish.comments.map((obj) => {
+            {comments.map((obj) => {
               return (
                 <div>
                   <ul className="list-unstyled">
@@ -47,15 +56,31 @@ function renderComments(dish) {
   }
 }
 
-const Dishdetail = (props) => {
+const DishDetail = (props) => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-12 col-md-5 m-1">{renderDish(props.dish)}</div>
-        <div className="col-12 col-md-5 m-1">{renderComments(props.dish)}</div>
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/menu">Menu</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+        </Breadcrumb>
+        <div className="col-12">
+          <h3>{props.dish.name}</h3>
+          <hr />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-12 col-md-5 m-1">
+          <RenderDish dish={props.dish} />
+        </div>
+        <div className="col-12 col-md-5 m-1">
+          <RenderComments comments={props.comments} />
+        </div>
       </div>
     </div>
   );
 };
 
-export default Dishdetail;
+export default DishDetail;
