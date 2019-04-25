@@ -3,7 +3,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Menu from './MenuComponent';
 import Home from './HomeComponent';
-import About from './AboutComponent';
+import About, {LeaderDetail} from './AboutComponent';
 import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -51,6 +51,15 @@ class Main extends Component {
       );
     };
 
+    const LeaderPage = ({match}) => {
+      return(<LeaderDetail leader={
+          this.state.leaders.filter(
+            (leader) => leader.id === parseInt(match.params.leaderId, 10)
+          )[0]
+        } />
+      );
+    }
+
     const MenuPage = () => {
       return <Menu dishes={this.state.dishes} />;
     };
@@ -66,6 +75,7 @@ class Main extends Component {
           <Route path="/home" component={HomePage} />
           <Route exact path="/menu" component={MenuPage} />
           <Route path="/menu/:dishId" component={DishWithId} />
+          <Route path="/about/leader/:leaderId" component={LeaderPage} />
           <Route exact path="/about" component={AboutPage} />
           <Route exact path="/contact" component={Contact} />
           <Redirect to="/home" />
