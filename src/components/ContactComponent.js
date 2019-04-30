@@ -92,7 +92,7 @@ class Contact extends Component {
   render() {
     const errors = this.validate(
       this.state.firstname,
-      this.state.lastnate,
+      this.state.lastname,
       this.state.telnum,
       this.state.email
     );
