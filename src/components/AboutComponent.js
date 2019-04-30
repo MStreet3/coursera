@@ -13,7 +13,7 @@ export function RenderLeader({ leader }) {
   return (
     <div key={`leader-${leader.id}`} className="col-12 mt-5">
       <Media tag="li">
-        <Link to={`/about/leader/${leader.id}`} >
+        <Link to={`/about/leader/${leader.id}`}>
           <Media left>
             <Media object src={leader.image} alt={leader.name} />
           </Media>
@@ -28,24 +28,24 @@ export function RenderLeader({ leader }) {
   );
 }
 
-export function LeaderDetail({leader}){
-  return(
+export function LeaderDetail({ leader }) {
+  return (
     <div className="container">
       <div className="row">
-      <Breadcrumb>
-        <BreadcrumbItem>
-          <Link to="/about">About Us</Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem active>{leader.name}</BreadcrumbItem>
-      </Breadcrumb>
-      <div className="col-12">
-        <h3>About our {leader.designation}</h3>
-        <hr />
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/about">About Us</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>{leader.name}</BreadcrumbItem>
+        </Breadcrumb>
+        <div className="col-12">
+          <h3>About our {leader.designation}</h3>
+          <hr />
+        </div>
+        <RenderLeader leader={leader} />
       </div>
-      <RenderLeader leader={leader} />
     </div>
-    </div>
-    );
+  );
 }
 
 function About(props) {

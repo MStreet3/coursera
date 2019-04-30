@@ -3,7 +3,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Menu from './MenuComponent';
 import Home from './HomeComponent';
-import About, {LeaderDetail} from './AboutComponent';
+import About, { LeaderDetail } from './AboutComponent';
 import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -51,14 +51,17 @@ class Main extends Component {
       );
     };
 
-    const LeaderPage = ({match}) => {
-      return(<LeaderDetail leader={
-          this.state.leaders.filter(
-            (leader) => leader.id === parseInt(match.params.leaderId, 10)
-          )[0]
-        } />
+    const LeaderPage = ({ match }) => {
+      return (
+        <LeaderDetail
+          leader={
+            this.state.leaders.filter(
+              (leader) => leader.id === parseInt(match.params.leaderId, 10)
+            )[0]
+          }
+        />
       );
-    }
+    };
 
     const MenuPage = () => {
       return <Menu dishes={this.state.dishes} />;
