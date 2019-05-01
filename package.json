@@ -32,6 +32,7 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint '{src,__mocks__,tests, dist}/**/*.{js,json}'",
     "precommit": "lint-staged",
+    "pretty": "prettier --single-quote --arrow-parens=always --list-different '{src,__mocks__,tests}/**/*.{js,json,ts,tsx}'",
     "format": "prettier --single-quote --arrow-parens=always --write '{src,__mocks__,tests, dist}/**/*.{js,json,ts,tsx}'",
     "eslint-check": "eslint --print-config . | eslint-config-prettier-check"
   },
@@ -43,5 +44,12 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-config-prettier": "^3.3.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.2",
+    "prettier": "1.12.1"
+  }
 }
