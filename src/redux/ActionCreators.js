@@ -88,12 +88,14 @@ export function fetchPromos() {
       json: true,
       resolveWithFullResponse: true
     });
+    console.log(response.body);
     return dispatch(addPromos(response.body));
   };
 }
 
 export const promosLoading = () => ({
-  type: ActionTypes.PROMOS_LOADING
+  type: ActionTypes.PROMOS_LOADING,
+  payload: true
 });
 
 export const promosFailed = (errmess) => ({
@@ -109,7 +111,7 @@ export const addPromos = (promos) => ({
 // actions for leaders
 export function fetchLeaders() {
   return async function(dispatch) {
-    dispatch(promosLoading());
+    dispatch(leadersLoading());
     let response = await rp({
       uri: baseUrl + 'leaders',
       method: 'GET',
@@ -121,7 +123,8 @@ export function fetchLeaders() {
 }
 
 export const leadersLoading = () => ({
-  type: ActionTypes.LEADERS_LOADING
+  type: ActionTypes.LEADERS_LOADING,
+  payload: true
 });
 
 export const leadersFailed = (errmess) => ({

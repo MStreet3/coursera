@@ -25,7 +25,7 @@ function RenderBasicCard({ item }) {
 }
 
 function RenderCard({ item, isLoading, errMsg }) {
-  if (isLoading) {
+  if (isLoading || !item) {
     return (
       <Card>
         <CardBody className="text-center">
@@ -56,15 +56,23 @@ function Home(props) {
         <div className="col-12 col-md m-1">
           <RenderCard
             item={props.dish}
-            isLoading={props.isLoading}
-            errMsg={props.errMsg}
+            isLoading={props.dishLoading}
+            errMsg={props.dishErrMsg}
           />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={props.promotion} />
+          <RenderCard
+            item={props.promotion}
+            isLoading={props.promoLoading}
+            errMsg={props.promoErrMsg}
+          />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={props.leader} />
+          <RenderCard
+            item={props.leader}
+            isLoading={props.leaderLoading}
+            errMsg={props.leaderErrMsg}
+          />
         </div>
       </div>
     </div>

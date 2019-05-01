@@ -8,32 +8,45 @@ import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addComment, fetchDishes } from '../redux/ActionCreators';
+import {
+  addComment,
+  fetchDishes,
+  fetchComments,
+  fetchLeaders,
+  fetchPromos
+} from '../redux/ActionCreators';
 
 const mapStateToProps = (state) => {
   return {
     isLoadingDishes: state.dishes.isLoading,
     errWithDishes: state.dishes.errMsg,
     dishes: state.dishes.dishes,
-    comments: state.comments,
-    promotions: state.promotions,
-    leaders: state.leaders
+    comments: state.comments.comments,
+    errWithComments: state.comments.errMsg,
+    promotions: state.promotions.promotions,
+    isLoadingPromos: state.promotions.isLoading,
+    errWithPromos: state.promotions.errMsg,
+    leaders: state.leaders.leaders,
+    isLoadingLeaders: state.leaders.isLoading,
+    errWithLeaders: state.leaders.errMsg
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   addComment: (dishId, rating, author, comment) =>
     dispatch(addComment(dishId, rating, author, comment)),
-  fetchDishes: () => dispatch(fetchDishes())
+  fetchDishes: () => dispatch(fetchDishes()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders())
 });
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchPromos();
+    this.props.fetchLeaders();
   }
 
   render() {
@@ -41,12 +54,16 @@ class Main extends Component {
       return (
         <Home
           dish={this.props.dishes.filter((dish) => dish.featured)[0]}
-          isLoading={this.props.isLoadingDishes}
-          errMsg={this.props.errWithDishes}
+          dishLoading={this.props.isLoadingDishes}
+          dishErrMsg={this.props.errWithDishes}
           promotion={
             this.props.promotions.filter((promotion) => promotion.featured)[0]
           }
+          promoLoading={this.props.isLoadingPromos}
+          promoErrMsg={this.props.errWithPromos}
           leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+          leaderLoading={this.props.isLoadingLeaders}
+          leaderErrMsg={this.props.errWithLeaders}
         />
       );
     };
@@ -64,6 +81,7 @@ class Main extends Component {
           comments={this.props.comments.filter(
             (comment) => comment.dishId === parseInt(match.params.dishId, 10)
           )}
+          commentsErrMsg={this.props.errWithComments}
           addComment={this.props.addComment}
         />
       );

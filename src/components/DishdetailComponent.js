@@ -52,10 +52,10 @@ function RenderDish({ dish }) {
   }
 }
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, addComment, dishId, errMsg }) {
   const commentsList = comments.map((comment) => {
     return (
-      <div>
+      <div key={`comment-${comment.id}`}>
         <li>{comment.comment}</li>
         <li>
           ---{comment.author}, {moment(comment.date).format('MMM. DD, YYYY')}
@@ -78,6 +78,10 @@ function RenderComments({ comments, addComment, dishId }) {
           <CommentForm dishId={dishId} addComment={addComment} />
         </CardBody>
       </Card>
+    );
+  } else if (errMsg) {
+    return (
+      <CommentForm dishId={dishId} addComment={addComment} errMsg={errMsg} />
     );
   } else {
     return <CommentForm dishId={dishId} addComment={addComment} />;
@@ -112,6 +116,7 @@ class CommentForm extends Component {
   render() {
     return (
       <div>
+        <div>{this.props.errMsg ? <h4>{this.props.errMsg}</h4> : ''}</div>
         <Button outline onClick={this.toggleModal}>
           <span className="fa fa-sign-in fa-lg" /> Leave a Comment
         </Button>
@@ -256,6 +261,7 @@ function DishDetail(props) {
               comments={props.comments}
               addComment={props.addComment}
               dishId={props.dish.id}
+              errMsg={props.commentsErrMsg}
             />
           </div>
         </div>
