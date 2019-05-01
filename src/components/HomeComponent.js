@@ -7,8 +7,9 @@ import {
   CardTitle,
   CardSubtitle
 } from 'reactstrap';
+import { Loading } from './LoadingComponent';
 
-function RenderCard({ item }) {
+function RenderBasicCard({ item }) {
   return (
     <Card>
       <CardImg src={item.image} alt={item.name} />
@@ -23,12 +24,41 @@ function RenderCard({ item }) {
   );
 }
 
+function RenderCard({ item, isLoading, errMsg }) {
+  if (isLoading) {
+    return (
+      <Card>
+        <CardBody className="text-center">
+          <Loading />
+        </CardBody>
+      </Card>
+    );
+  } else if (errMsg) {
+    return (
+      <Card>
+        <CardBody className="text-center">
+          <CardText>
+            <h4>{errMsg}</h4>
+          </CardText>
+          >
+        </CardBody>
+      </Card>
+    );
+  } else {
+    return <RenderBasicCard item={item} />;
+  }
+}
+
 function Home(props) {
   return (
     <div className="container">
       <div className="row align-items-start">
         <div className="col-12 col-md m-1">
-          <RenderCard item={props.dish} />
+          <RenderCard
+            item={props.dish}
+            isLoading={props.isLoading}
+            errMsg={props.errMsg}
+          />
         </div>
         <div className="col-12 col-md m-1">
           <RenderCard item={props.promotion} />

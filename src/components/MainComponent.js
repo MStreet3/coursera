@@ -8,11 +8,13 @@ import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addComment } from '../redux/ActionCreators';
+import { addComment, fetchDishes } from '../redux/ActionCreators';
 
 const mapStateToProps = (state) => {
   return {
-    dishes: state.dishes,
+    isLoadingDishes: state.dishes.isLoading,
+    errWithDishes: state.dishes.errMsg,
+    dishes: state.dishes.dishes,
     comments: state.comments,
     promotions: state.promotions,
     leaders: state.leaders
@@ -21,7 +23,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   addComment: (dishId, rating, author, comment) =>
-    dispatch(addComment(dishId, rating, author, comment))
+    dispatch(addComment(dishId, rating, author, comment)),
+  fetchDishes: () => dispatch(fetchDishes())
 });
 
 class Main extends Component {
@@ -29,11 +32,17 @@ class Main extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.fetchDishes();
+  }
+
   render() {
     const HomePage = () => {
       return (
         <Home
           dish={this.props.dishes.filter((dish) => dish.featured)[0]}
+          isLoading={this.props.isLoadingDishes}
+          errMsg={this.props.errWithDishes}
           promotion={
             this.props.promotions.filter((promotion) => promotion.featured)[0]
           }
@@ -50,6 +59,8 @@ class Main extends Component {
               (dish) => dish.id === parseInt(match.params.dishId, 10)
             )[0]
           }
+          isLoading={this.props.isLoadingDishes}
+          errMsg={this.props.errWithDishes}
           comments={this.props.comments.filter(
             (comment) => comment.dishId === parseInt(match.params.dishId, 10)
           )}
@@ -71,7 +82,13 @@ class Main extends Component {
     };
 
     const MenuPage = () => {
-      return <Menu dishes={this.props.dishes} />;
+      return (
+        <Menu
+          dishes={this.props.dishes}
+          isLoading={this.props.isLoadingDishes}
+          errMsg={this.props.errWithDishes}
+        />
+      );
     };
 
     const AboutPage = () => {
