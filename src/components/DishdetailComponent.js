@@ -51,7 +51,7 @@ function RenderDish({ dish }) {
   }
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
   if (comments != null) {
     return (
       <Card key={`comments-selected-${comments.dishId}`}>
@@ -72,12 +72,12 @@ function RenderComments({ comments }) {
               );
             })}
           </CardText>
-          <CommentForm />
+          <CommentForm dishId={dishId} addComment={addComment} />
         </CardBody>
       </Card>
     );
   } else {
-    return <div />;
+    return <CommentForm dishId={dishId} addComment={addComment} />;
   }
 }
 
@@ -90,16 +90,20 @@ class CommentForm extends Component {
     this.toggleModal = this.toggleModal.bind(this);
   }
 
-  toggleModal(e) {
-    e.preventDefault();
+  toggleModal() {
     this.setState({
       isModalActive: !this.state.isModalActive
     });
   }
 
   handleSubmit(values) {
-    console.log('Current State is: ' + JSON.stringify(values));
-    alert('Current State is: ' + JSON.stringify(values));
+    this.toggleModal();
+    this.props.addComment(
+      this.props.dishId,
+      values.rating,
+      values.author,
+      values.message
+    );
   }
 
   render() {
@@ -128,7 +132,9 @@ class CommentForm extends Component {
                   >
                     <option value="1">1</option>
                     <option value="2">2</option>
-                    <option value="3">3</option>
+                    <option value="3" selected>
+                      3
+                    </option>
                     <option value="4">4</option>
                     <option value="5">5</option>
                   </Control.select>
@@ -143,14 +149,14 @@ class CommentForm extends Component {
                 </Col>
               </Row>
               <Row className="form-group">
-                <Label htmlFor="firstname" md={2}>
+                <Label htmlFor="author" md={2}>
                   Your Name
                 </Label>
                 <Col md={10}>
                   <Control.text
-                    model=".firstname"
-                    id="firstname"
-                    name="firstname"
+                    model=".author"
+                    id="author"
+                    name="author"
                     placeholder="Your Name"
                     className="form-control"
                     validators={{
@@ -161,7 +167,7 @@ class CommentForm extends Component {
                   />
                   <Errors
                     className="text-danger"
-                    model=".firstname"
+                    model=".author"
                     show="touched"
                     messages={{
                       required: 'Required',
@@ -226,7 +232,11 @@ const DishDetail = (props) => {
           <RenderDish dish={props.dish} />
         </div>
         <div className="col-12 col-md-5 m-1">
-          <RenderComments comments={props.comments} />
+          <RenderComments
+            comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
         </div>
       </div>
     </div>
