@@ -1,5 +1,6 @@
 import * as ActionTypes from './ActionTypes';
-import { DISHES } from '../shared/dishes';
+import { baseUrl } from '../shared/baseUrl';
+import rp from 'request-promise';
 
 export function addComment(dishId, rating, author, comment) {
   return {
@@ -14,11 +15,15 @@ export function addComment(dishId, rating, author, comment) {
 }
 
 export function fetchDishes() {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch(dishesLoading(true));
-    setTimeout(() => {
-      return dispatch(addDishes(DISHES));
-    }, 1500);
+    let response = await rp({
+      uri: baseUrl + 'dishes',
+      method: 'GET',
+      json: true,
+      resolveWithFullResponse: true
+    });
+    return dispatch(addDishes(response.body));
   };
 }
 
