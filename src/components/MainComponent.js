@@ -115,15 +115,25 @@ class Main extends Component {
     return (
       <div>
         <Header />
-        <Switch>
-          <Route path="/home" component={HomePage} />
-          <Route exact path="/menu" component={MenuPage} />
-          <Route path="/menu/:dishId" component={DishWithId} />
-          <Route path="/about/leader/:leaderId" component={LeaderPage} />
-          <Route exact path="/about" component={AboutPage} />
-          <Route exact path="/contact" component={Contact} />
-          <Redirect to="/home" />
-        </Switch>
+        <TransitionGroup>
+          <CSSTransition
+            key={this.props.location.key}
+            timeout={300}
+            classNames="page"
+          >
+            <div className="WRAPPER">
+              <Switch location={this.props.location}>
+                <Route path="/home" component={HomePage} />
+                <Route exact path="/menu" component={MenuPage} />
+                <Route path="/menu/:dishId" component={DishWithId} />
+                <Route path="/about/leader/:leaderId" component={LeaderPage} />
+                <Route exact path="/about" component={AboutPage} />
+                <Route exact path="/contact" component={Contact} />
+                <Redirect to="/home" />
+              </Switch>
+            </div>
+          </CSSTransition>
+        </TransitionGroup>
         <Footer />
       </div>
     );

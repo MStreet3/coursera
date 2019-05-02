@@ -20,21 +20,21 @@ import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
 import moment from 'moment';
 
-const required = (val) => {
+function required(val) {
   return val && val.length;
-};
+}
 
-const maxLength = (len) => {
-  return (val) => {
+function maxLength(len) {
+  return function(val) {
     return !val || val.length <= len;
   };
-};
+}
 
-const minLength = (len) => {
-  return (val) => {
+function minLength(len) {
+  return function(val) {
     return val && val.length >= len;
   };
-};
+}
 
 function RenderDish({ dish }) {
   if (dish != null) {
@@ -42,8 +42,8 @@ function RenderDish({ dish }) {
       <Card key={`selected-${dish.id}`}>
         <CardImg top src={dish.image} alt={dish.name} />
         <CardBody>
-          <CardTitle>{dish.name}</CardTitle>
-          <CardText>{dish.description}</CardText>
+          <CardTitle> {dish.name} </CardTitle>
+          <CardText> {dish.description} </CardText>
         </CardBody>
       </Card>
     );
@@ -67,8 +67,7 @@ function RenderComments({ comments, addComment, dishId, errMsg }) {
       return (
         <Card>
           <CardBody className="text-left">
-            <CardTitle>Comments</CardTitle>
-
+            <CardTitle> Comments </CardTitle>
             {
               <ul className="list-unstyled">
                 {comments
@@ -76,9 +75,9 @@ function RenderComments({ comments, addComment, dishId, errMsg }) {
                   .map((comment) => {
                     return (
                       <li key={`comment-${comment.id}`}>
-                        <p>{comment.comment}</p>
+                        <p> {comment.comment} </p>
                         <p>
-                          ---{comment.author},{' '}
+                          --- {comment.author},
                           {moment(comment.date).format('MMM. DD, YYYY')}
                         </p>
                       </li>
@@ -86,7 +85,6 @@ function RenderComments({ comments, addComment, dishId, errMsg }) {
                   })}
               </ul>
             }
-
             <CommentForm dishId={dishId} addComment={addComment} />
           </CardBody>
         </Card>
@@ -129,11 +127,10 @@ class CommentForm extends Component {
   render() {
     return (
       <div>
-        <div>{this.props.errMsg ? <h4>{this.props.errMsg}</h4> : ''}</div>
+        <div> {this.props.errMsg ? <h4> {this.props.errMsg} </h4> : ''}</div>
         <Button outline onClick={this.toggleModal}>
           <span className="fa fa-sign-in fa-lg" /> Leave a Comment
         </Button>
-
         <Modal isOpen={this.state.isModalActive} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Submit a Comment</ModalHeader>
           <ModalBody>
@@ -152,11 +149,11 @@ class CommentForm extends Component {
                     }}
                     defaultValue="3"
                   >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="1"> 1 </option>
+                    <option value="2"> 2 </option>
+                    <option value="3"> 3 </option>
+                    <option value="4"> 4 </option>
+                    <option value="5"> 5 </option>
                   </Control.select>
                   <Errors
                     className="text-danger"
@@ -218,7 +215,12 @@ class CommentForm extends Component {
                 </Col>
               </Row>
               <Row className="form-group">
-                <Col md={{ size: 10, offset: 2 }}>
+                <Col
+                  md={{
+                    size: 10,
+                    offset: 2
+                  }}
+                >
                   <Button type="submit" color="primary">
                     Submit Comment
                   </Button>
@@ -245,7 +247,7 @@ function DishDetail(props) {
     return (
       <div className="container">
         <div className="row">
-          <h4>{props.errMsg}</h4>
+          <h4> {props.errMsg} </h4>
         </div>
       </div>
     );
@@ -255,13 +257,12 @@ function DishDetail(props) {
         <div className="row">
           <Breadcrumb>
             <BreadcrumbItem>
-              <Link to="/menu">Menu</Link>
+              <Link to="/menu"> Menu </Link>
             </BreadcrumbItem>
-            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+            <BreadcrumbItem active> {props.dish.name} </BreadcrumbItem>
           </Breadcrumb>
           <div className="col-12">
-            <h3>{props.dish.name}</h3>
-            <hr />
+            <h3> {props.dish.name} </h3> <hr />
           </div>
         </div>
         <div className="row">

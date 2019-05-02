@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 export function RenderLeader({ leader }) {
   return (
-    <div key={`leader-${leader.id}`} className="col-12 mt-5">
+    <div className="col-12 mt-5">
       <Media tag="li">
         <Link to={`/about/leader/${leader.id}`}>
           <Media left>
@@ -42,7 +42,7 @@ export function LeaderDetail({ leader }) {
           <h3>About our {leader.designation}</h3>
           <hr />
         </div>
-        <RenderLeader leader={leader} />
+        <RenderLeader key={`leader-${leader.id}`} leader={leader} />
       </div>
     </div>
   );
@@ -50,7 +50,7 @@ export function LeaderDetail({ leader }) {
 
 function About(props) {
   const leaders = props.leaders.map((leader) => {
-    return <RenderLeader leader={leader} />;
+    return <RenderLeader key={`leader-${leader.id}`} leader={leader} />;
   });
 
   return (
