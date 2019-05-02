@@ -53,28 +53,45 @@ function RenderDish({ dish }) {
 }
 
 function RenderComments({ comments, addComment, dishId, errMsg }) {
-  const commentsList = comments.map((comment) => {
-    return (
-      <div key={`comment-${comment.id}`}>
-        <li>{comment.comment}</li>
-        <li>
-          ---{comment.author}, {moment(comment.date).format('MMM. DD, YYYY')}
-        </li>
-      </div>
-    );
-  });
   if (comments != null) {
-    return (
-      <Card key={`comments-selected-${comments.dishId}`}>
-        <CardBody className="text-left">
-          <CardTitle>Comments</CardTitle>
+    if (comments.includes(undefined)) {
+      return (
+        <Card>
+          <CardBody>
+            <Loading />
+            <CommentForm dishId={dishId} addComment={addComment} />
+          </CardBody>
+        </Card>
+      );
+    } else {
+      return (
+        <Card>
+          <CardBody className="text-left">
+            <CardTitle>Comments</CardTitle>
 
-          {<ul className="list-unstyled">{commentsList}</ul>}
+            {
+              <ul className="list-unstyled">
+                {comments
+                  .filter((comment) => comment.dishId === dishId)
+                  .map((comment) => {
+                    return (
+                      <li key={`comment-${comment.id}`}>
+                        <p>{comment.comment}</p>
+                        <p>
+                          ---{comment.author},{' '}
+                          {moment(comment.date).format('MMM. DD, YYYY')}
+                        </p>
+                      </li>
+                    );
+                  })}
+              </ul>
+            }
 
-          <CommentForm dishId={dishId} addComment={addComment} />
-        </CardBody>
-      </Card>
-    );
+            <CommentForm dishId={dishId} addComment={addComment} />
+          </CardBody>
+        </Card>
+      );
+    }
   } else if (errMsg) {
     return (
       <CommentForm dishId={dishId} addComment={addComment} errMsg={errMsg} />
@@ -216,7 +233,7 @@ class CommentForm extends Component {
 }
 
 function DishDetail(props) {
-  if (props.isLoading || props.comments.includes(undefined)) {
+  if (props.isLoading) {
     return (
       <div className="container">
         <div className="row">
@@ -253,9 +270,7 @@ function DishDetail(props) {
           </div>
           <div className="col-12 col-md-5 m-1">
             <RenderComments
-              comments={props.comments.filter(
-                (comment) => comment.dishId === props.dish.id
-              )}
+              comments={props.comments}
               addComment={props.addComment}
               dishId={props.dish.id}
               errMsg={props.commentsErrMsg}
