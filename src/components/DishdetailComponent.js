@@ -68,13 +68,9 @@ function RenderComments({ comments, addComment, dishId, errMsg }) {
       <Card key={`comments-selected-${comments.dishId}`}>
         <CardBody className="text-left">
           <CardTitle>Comments</CardTitle>
-          <CardText>
-            {
-              <div>
-                <ul className="list-unstyled">{commentsList}</ul>
-              </div>
-            }
-          </CardText>
+
+          {<ul className="list-unstyled">{commentsList}</ul>}
+
           <CommentForm dishId={dishId} addComment={addComment} />
         </CardBody>
       </Card>
@@ -137,12 +133,11 @@ class CommentForm extends Component {
                     validators={{
                       required
                     }}
+                    defaultValue="3"
                   >
                     <option value="1">1</option>
                     <option value="2">2</option>
-                    <option value="3" selected>
-                      3
-                    </option>
+                    <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
                   </Control.select>
@@ -221,7 +216,7 @@ class CommentForm extends Component {
 }
 
 function DishDetail(props) {
-  if (props.isLoading) {
+  if (props.isLoading || props.comments.includes(undefined)) {
     return (
       <div className="container">
         <div className="row">
@@ -258,7 +253,9 @@ function DishDetail(props) {
           </div>
           <div className="col-12 col-md-5 m-1">
             <RenderComments
-              comments={props.comments}
+              comments={props.comments.filter(
+                (comment) => comment.dishId === props.dish.id
+              )}
               addComment={props.addComment}
               dishId={props.dish.id}
               errMsg={props.commentsErrMsg}

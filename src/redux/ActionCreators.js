@@ -3,7 +3,6 @@ import { baseUrl } from '../shared/baseUrl';
 import rp from 'request-promise';
 
 // actions for dishes
-
 export function fetchDishes() {
   return async function(dispatch) {
     dispatch(dishesLoading(true));
@@ -39,7 +38,6 @@ export function dishesFailed(errMsg) {
 }
 
 // actions for comments
-
 export function fetchComments() {
   return async function(dispatch) {
     let response = await rp({
@@ -66,15 +64,29 @@ export function commentsFailed(errMsg) {
   };
 }
 
-export function addComment(dishId, rating, author, comment) {
+export function addComment(comment) {
   return {
     type: ActionTypes.ADD_COMMENT,
-    payload: {
-      dishId: dishId,
-      rating: rating,
-      author: author,
-      comment: comment
-    }
+    payload: comment
+  };
+}
+
+export function postComment(dishId, rating, author, comment) {
+  return async function(dispatch) {
+    let response = await rp({
+      uri: baseUrl + 'comments',
+      method: 'POST',
+      body: {
+        dishId: dishId,
+        rating: rating,
+        author: author,
+        comment: comment,
+        date: new Date().toISOString()
+      },
+      json: true
+    });
+    dispatch(addComment(response.body));
+    return dispatch(fetchComments());
   };
 }
 
