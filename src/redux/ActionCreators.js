@@ -130,7 +130,17 @@ export function fetchLeaders() {
       json: true,
       resolveWithFullResponse: true
     });
-    return dispatch(addLeaders(response.body));
+    if (response.statusCode === 200) {
+      return dispatch(addLeaders(response.body));
+    } else {
+      return dispatch(
+        leadersFailed(
+          `Fetch of leaders failed with ${
+            response.statusCode
+          } status code and the following message: ${response.statusMessage}`
+        )
+      );
+    }
   };
 }
 

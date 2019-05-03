@@ -7,6 +7,7 @@ import About, { LeaderDetail } from './AboutComponent';
 import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { Card, CardHeader, CardBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
@@ -16,6 +17,7 @@ import {
   fetchLeaders,
   fetchPromos
 } from '../redux/ActionCreators';
+import { Loading } from './LoadingComponent';
 
 const mapStateToProps = (state) => {
   return {
@@ -87,15 +89,34 @@ class Main extends Component {
     };
 
     const LeaderPage = ({ match }) => {
-      return (
-        <LeaderDetail
-          leader={
-            this.props.leaders.filter(
-              (leader) => leader.id === parseInt(match.params.leaderId, 10)
-            )[0]
-          }
-        />
-      );
+      if (this.props.isLoadingLeaders && !this.props.errWithLeaders) {
+        return (
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <Loading />
+              </div>
+            </div>
+          </div>
+        );
+      } else if (!this.props.isLoadingLeaders && this.props.errWithLeaders) {
+        return (
+          <Card>
+            <CardHeader>Error Loading Leaders</CardHeader>
+            <CardBody>{this.props.errWithLeaders}</CardBody>
+          </Card>
+        );
+      } else {
+        return (
+          <LeaderDetail
+            leader={
+              this.props.leaders.filter(
+                (leader) => leader.id === parseInt(match.params.leaderId, 10)
+              )[0]
+            }
+          />
+        );
+      }
     };
 
     const MenuPage = () => {
@@ -109,7 +130,13 @@ class Main extends Component {
     };
 
     const AboutPage = () => {
-      return <About leaders={this.props.leaders} />;
+      return (
+        <About
+          leaders={this.props.leaders}
+          leaderLoading={this.props.isLoadingLeaders}
+          leaderErrMsg={this.props.errWithLeaders}
+        />
+      );
     };
 
     return (
