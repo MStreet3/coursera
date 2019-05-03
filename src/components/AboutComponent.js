@@ -9,6 +9,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { Stagger, Fade } from 'react-animation-components';
 
 export function RenderLeader({ leader, link }) {
   return (
@@ -60,10 +61,17 @@ function DisplayLeaders({ leaders, leaderLoading, leaderErrMsg }) {
       </Card>
     );
   } else {
-    const renderedLeaders = leaders.map((leader) => {
-      return <RenderLeader key={`leader-${leader.id}`} leader={leader} />;
-    });
-    return <Media list>{renderedLeaders}</Media>;
+    return (
+      <Media list>
+        <Stagger in>
+          {leaders.map((leader) => (
+            <Fade>
+              <RenderLeader key={`leader-${leader.id}`} leader={leader} />
+            </Fade>
+          ))}
+        </Stagger>
+      </Media>
+    );
   }
 }
 
