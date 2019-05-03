@@ -158,3 +158,39 @@ export const addLeaders = (leaders) => ({
   type: ActionTypes.ADD_LEADERS,
   payload: leaders
 });
+
+// actions to handle feedback
+export function postFeedback(values) {
+  return async function(dispatch) {
+    dispatch(addFeedback());
+    let response = await rp({
+      uri: baseUrl + 'feedback',
+      method: 'POST',
+      json: true,
+      body: values,
+      resolveWithFullResponse: true
+    });
+    if (response.statusCode === 201) {
+      console.log('Posted feedback to the server');
+      return dispatch(feedbackSuccess());
+    } else {
+      dispatch(feedbackFailed(response.statusMessage));
+      throw new Error(response.statusMessage);
+    }
+  };
+}
+
+export const addFeedback = () => ({
+  type: ActionTypes.ADD_FEEDBACK,
+  payload: true
+});
+
+export const feedbackFailed = (errMsg) => ({
+  type: ActionTypes.FEEDBACK_FAILED,
+  payload: errMsg
+});
+
+export const feedbackSuccess = () => ({
+  type: ActionTypes.FEEDBACK_SUCCESS,
+  payload: ''
+});

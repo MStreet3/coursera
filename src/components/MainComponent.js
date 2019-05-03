@@ -15,7 +15,8 @@ import {
   fetchDishes,
   fetchComments,
   fetchLeaders,
-  fetchPromos
+  fetchPromos,
+  postFeedback
 } from '../redux/ActionCreators';
 import { Loading } from './LoadingComponent';
 
@@ -41,7 +42,8 @@ const mapDispatchToProps = (dispatch) => ({
   fetchDishes: () => dispatch(fetchDishes()),
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
-  fetchLeaders: () => dispatch(fetchLeaders())
+  fetchLeaders: () => dispatch(fetchLeaders()),
+  postFeedback: (values) => dispatch(postFeedback(values))
 });
 
 class Main extends Component {
@@ -155,7 +157,13 @@ class Main extends Component {
                 <Route path="/menu/:dishId" component={DishWithId} />
                 <Route path="/about/leader/:leaderId" component={LeaderPage} />
                 <Route exact path="/about" component={AboutPage} />
-                <Route exact path="/contact" component={Contact} />
+                <Route
+                  exact
+                  path="/contact"
+                  component={() => (
+                    <Contact postFeedback={this.props.postFeedback} />
+                  )}
+                />
                 <Redirect to="/home" />
               </Switch>
             </div>
